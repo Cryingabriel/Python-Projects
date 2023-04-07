@@ -100,8 +100,8 @@ jump = pygame.mixer.Sound('jump.wav')#load in sound effect
 music = pygame.mixer.music.load('believe-in-miracle.mp3')#load in background music
 pygame.mixer.music.play(-1)#start background music
 #Controller Input
-controller = pygame.joystick.Joystick(0) 
-controller.init()
+#controller = pygame.joystick.Joystick(0) 
+#controller.init()
 
 
 while not gameover and health > 0: #GAME LOOP############################################################
@@ -135,10 +135,10 @@ while not gameover and health > 0: #GAME LOOP###################################
 
     #physics section--------------------------------------------------------------------
     #Player Movement
-    xvel = controller.get_axis(0)
-    yvel = controller.get_axis(1)
-    cxvel = controller.get_axis(0)
-    cyvel = controller.get_axis(1)
+    #xvel = controller.get_axis(0)
+    #yvel = controller.get_axis(1)
+    #cxvel = controller.get_axis(0)
+    #cyvel = controller.get_axis(1)
     if keys[LEFT]==True:
         vx=-3
         direction = LEFT    
@@ -154,8 +154,8 @@ while not gameover and health > 0: #GAME LOOP###################################
     else:
         vx = 0
     
-    xpos += int(xvel * 10)
-    ypos += int(yvel * 10)
+    #xpos += int(xvel * 10)
+    #ypos += int(yvel * 10)
     enmove(enemy1) 
 
     enmove(enemy2) 
