@@ -17,7 +17,7 @@ p2y = 200
 
 p2Score = 0
 p1Score = 0
-#____ball variables____________________
+#____ball variables____________________w
 bx = 350
 by = 250
 bVx = 5
