@@ -1517,7 +1517,7 @@ def battlesystem(monster):#This makes it so that you can fight monsters and dege
         print("slimes are trying to erode you")
         time.sleep(2)
     elif monster == "Dragon":
-        monsterhealth = 80
+        monsterhealth = 100
         print("the master of this place won't let you leave that easily")
         time.sleep(2)
         
@@ -1546,7 +1546,7 @@ def battlesystem(monster):#This makes it so that you can fight monsters and dege
             monsterattack = random.randrange(19,24)
         elif monster == "Dragon":
             if nu <= 99:
-                monsterattack = random.randrange(15,37)
+                monsterattack = random.randrange(20,37)
             elif nu <= 100:
                 monsterattack = random.randrange(149,150)
             
