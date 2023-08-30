@@ -29,7 +29,7 @@ text3 = font.render('You Crashed!', False, (200, 50, 50))
 text4 = font.render('Vertical velocity:', False, (200, 20, 20))
 text5 = font.render(str(int(pvy)), 1 , (200, 20, 20))
 text6 = font.render('Height', False, (20, 20, 200))
-text4 = font.render(str(int(ypos)), 1 , (20, 20, 200))
+text7 = font.render(str(int(ypos)), 1 , (20, 20, 200))
 
 
 # Game Loop___________________________________________________________________________________________
