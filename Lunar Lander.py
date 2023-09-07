@@ -11,6 +11,11 @@ pygame.display.set_caption("Lunar Lander Simulator")
 Exit = False
 clock = pygame.time.Clock()
 
+
+
+#Images 
+star = pygame.image.load('')
+
 # Player Variables
 xpos = 350
 ypos = 0
