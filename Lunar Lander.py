@@ -14,7 +14,7 @@ clock = pygame.time.Clock()
 
 
 #Images 
-star = pygame.image.load('')
+#@star = pygame.image.load('')
 
 # Player Variables
 xpos = 350
