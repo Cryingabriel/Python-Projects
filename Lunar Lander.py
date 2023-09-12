@@ -14,7 +14,7 @@ clock = pygame.time.Clock()
 
 
 #Images 
-#@star = pygame.image.load('')
+star = pygame.image.load('')
 
 # Player Variables
 xpos = 350
@@ -100,6 +100,9 @@ while Exit == False:
     if ypos >950:
         isground = True
         ypos = 950
+
+
+    
 
 
     #______________Update Section__________________________________________
