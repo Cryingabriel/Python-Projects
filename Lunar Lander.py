@@ -14,7 +14,6 @@ clock = pygame.time.Clock()
 
 
 #Images 
-star = pygame.image.load('')
 
 # Player Variables
 xpos = 350
@@ -59,6 +58,14 @@ while Exit == False:
                 might = True
             if event.key == pygame.K_UP:
                 mup = True
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                meft = False
+            if event.key == pygame.K_RIGHT:
+                might = False
+            if event.key == pygame.K_UP:
+                mup = False
+
 
    
    
@@ -73,7 +80,7 @@ while Exit == False:
         pvx += 3
     else:
         pvx = 0
-    if mup == True:
+    if event.key == pygame.KEYDOWN:
         pvy -= 4.17/60
         isground = False
         Rocketon = True
@@ -102,7 +109,7 @@ while Exit == False:
         ypos = 950
 
 
-    
+
 
 
     #______________Update Section__________________________________________
