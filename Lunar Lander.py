@@ -19,7 +19,7 @@ clock = pygame.time.Clock()
 xpos = 350
 ypos = 0
 pvx = 0
-pvy = .10
+pvy = 0
 isground = False
 Rocketon = False
 Crashed = False
@@ -72,26 +72,27 @@ while Exit == False:
    
    
    #___________Physics Section_____________________________
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                pvy -= 4.17/60
+                isground = False
+                Rocketon = True
+
+        else:
+            if isground == False:
+                pvy += 1.65/60
+            Rocketon = False
    
-   
+
     if meft == True:
         pvx -= 3
     if might == True:
         pvx += 3
     else:
         pvx = 0
-    if event.key == pygame.KEYDOWN:
-        pvy -= 4.17/60
-        isground = False
-        Rocketon = True
-
-    else:
-        if isground == False:
-            pvy += 1.65/60
-        Rocketon = False
 
 
-    if isground == True and abs(pvy) > .5:
+    if isground == True and abs(pvy) > 5:
         Crashed = True
         xpos = 350
         ypos = 0
@@ -99,7 +100,7 @@ while Exit == False:
         pvy = 0
         isground = False
     
-    if isground == True and abs(pvy) < .5:
+    if isground == True and abs(pvy) < 5:
         Crashed = False
         pvy = 0
         pvx = 0
