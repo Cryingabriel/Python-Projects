@@ -112,12 +112,12 @@ class player:
         
         self.pos += (self.vx, self.vy)
         
-    def collide(self):
-        if self.pos.y > 780:
-            self.isonground = True
-            self.vy = 0
-            self.pos.y = 780
-                #gravity
+    #def collide(self):
+        #if self.pos.y > 780:
+        #    self.isonground = True
+        #    self.vy = 0
+        #    self.pos.y = 780
+        #        #gravity
 
 
     
@@ -144,7 +144,7 @@ while(1):
         plats[i].move()
     
     ah.move(keys)
-    ah.collide()
+    #ah.collide()
     #render section
     screen.fill(color)
     for i in range(len(plats)):
