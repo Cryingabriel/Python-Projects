@@ -112,12 +112,12 @@ class player:
         
         self.pos += (self.vx, self.vy)
         
-    #def collide(self):
-        #if self.pos.y > 780:
-        #    self.isonground = True
-        #    self.vy = 0
-        #    self.pos.y = 780
-        #        #gravity
+    def collide(self):
+        if self.pos.y > 780:
+            self.isonground = True
+            self.vy = 0
+            self.pos.y = 780
+            #gravity
 
 
     
@@ -129,12 +129,12 @@ class player:
 plats = []
 for i in range(5):
     plats.append(platform(random.randrange(50, 700), random.randrange(50, 700)))
-for i in range(3):
-    plats.append(mblock(random.randrange(50, 500), random.randrange(50, 500)))
+for i in range(8):
+    plats.append(mblock(random.randrange(50, 600), random.randrange(50, 700)))
 for i in range(1):
     plats.append(iblock(random.randrange(50, 700), random.randrange(50, 500)))
 
-b1 = platform(200,300)
+b1 = platform(200,750)
 b2 = mblock(400, 500)
 
 
@@ -143,14 +143,16 @@ while(1):
     for i in range(len(plats)):
         plats[i].move()
     
+    
     ah.move(keys)
-    #ah.collide()
+    ah.collide()
     #render section
     screen.fill(color)
     for i in range(len(plats)):
         plats[i].draw()
 
     ah.draw()
+    b1.draw()
 
 
 
