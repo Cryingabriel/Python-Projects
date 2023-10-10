@@ -28,6 +28,10 @@ class platform():
     
     def move(self):
         pass
+    def collide(self):
+        pass
+    def collide2(self):
+        pass
 
 class mblock(platform):
     def __init__(self, xpos, ypos):
@@ -51,6 +55,10 @@ class mblock(platform):
                 self.direction*=-1
             else:
                 self.pos.x+=.1
+    def collide(self):
+        pass
+    def collide2(self):
+        pass
 
 class iblock(platform):
     def __init__(self, xpos, ypos):
@@ -60,6 +68,10 @@ class iblock(platform):
         pygame.draw.rect(screen, (100, 150, 255), (self.pos.x, self.pos.y, 80, 30))
     def move(self):
         pass
+    def collide(self):
+        return self.pos
+
+
 
 
 class player:
@@ -101,7 +113,7 @@ class player:
             self.vx=.3
             #JUMPING
         elif keys[UP] == True and self.isonground == True:
-            self.vy = -.8
+            self.vy = -1
             self.isonground = False
         #turn off velocity
         else:
@@ -113,12 +125,14 @@ class player:
         self.pos += (self.vx, self.vy)
         
     def collide(self):
+
         if self.pos.y > 780:
             self.isonground = True
             self.vy = 0
             self.pos.y = 780
-            #gravity
-
+                #gravity
+        
+        
 
     
 
@@ -134,9 +148,9 @@ for i in range(8):
 for i in range(1):
     plats.append(iblock(random.randrange(50, 700), random.randrange(50, 500)))
 
+
 b1 = platform(200,750)
 b2 = mblock(400, 500)
-
 
 ah = player()
 while(1):
@@ -145,11 +159,13 @@ while(1):
     
     
     ah.move(keys)
-    ah.collide()
+    
     #render section
     screen.fill(color)
     for i in range(len(plats)):
         plats[i].draw()
+    ah.collide()
+
 
     ah.draw()
     b1.draw()
