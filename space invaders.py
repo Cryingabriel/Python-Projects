@@ -110,7 +110,7 @@ Trump = wall(400, 670)
 for k in range  (4):
     for l in range (2):
         for o in range (3):
-            walls.append(wall(o*30+200*k+50, i*30+600))
+            walls.append(wall(o*30+200*k+50, l*30+600))
 
 #------------------------------------------------------------------------------------------------------------
 class Missle:

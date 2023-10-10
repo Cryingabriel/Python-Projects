@@ -49,12 +49,12 @@ class mblock(platform):
             if self.pos.x < self.startx:
                 self.direction*=-1
             else:
-                self.pos.x-=.1
+                self.pos.x-=2
         else:
             if self.pos.x > self.startx +200:
                 self.direction*=-1
             else:
-                self.pos.x+=.1
+                self.pos.x+=2
     def collide(self):
         pass
     def collide2(self):
@@ -80,9 +80,53 @@ class player:
         self.isonground = False
         self.vx = 0
         self.vy = 0
+        self.ticker = 0
+        self.framenum = 0
+        self.rownum = 0
+        self.link = pygame.image.load('boxpep.png')
+        self.link.set_colorkey((200,0,255))
+        self.framewidth = 20
+        self.frameheight = 40
 
     def draw(self):
-        pygame.draw.rect(screen, (255,255,255), (self.pos.x, self.pos.y, 20,20))
+        screen.blit(self.link, (self.pos.x, self.pos.y), (self.framewidth*self.framenum, self.rownum*self.frameheight, self.framewidth, self.frameheight))
+
+
+    def animate(self):
+        if self.vx < 0:
+            self.ticker+=1
+            self.rownum = 0
+        
+        if self.ticker%10==0:
+            self.rownum = 1
+            self.framenum+=1
+        
+        if self.framenum > 6:
+            self.framenum = 0
+        
+        if self.vx > 0:
+            self.ticker+=1
+            if self.ticker%10==0:
+                self.rownum = 0
+                self.framenum+=1
+            if self.framenum > 6:
+                self.framenum = 0
+        
+        if self.vy < 0:
+            self.ticker+=1
+            if self.ticker%10==0:
+                self.rownum = 2
+                self.framenum+=1
+            if self.framenum > 6:
+                self.framenum = 0
+        
+        if self.vy > 0:
+            self.ticker+=1
+            if self.ticker%10==0:
+                self.rownum = 3
+                self.framenum+=1
+            if self.framenum > 6:
+                self.framenum = 0
 
 
     def move(self,keys):
@@ -108,28 +152,33 @@ class player:
                 if event.key == pygame.K_RIGHT:
                     keys[RIGHT]=False
         if keys[LEFT]==True:
-            self.vx=-.3   
+            self.vx=-3   
         elif keys[RIGHT]==True:
-            self.vx=.3
+            self.vx=3
             #JUMPING
         elif keys[UP] == True and self.isonground == True:
-            self.vy = -1
+            self.vy = -8
             self.isonground = False
         #turn off velocity
         else:
             self.vx = 0
         
         if self.isonground == False:
-            self.vy+=.2/60 #notice this grows over time, aka ACCELERATION
+            self.vy+=.2 #notice this grows over time, aka ACCELERATION
         
         self.pos += (self.vx, self.vy)
+
+
+
+
+
         
     def collide(self):
 
-        if self.pos.y > 780:
+        if self.pos.y > 760:
             self.isonground = True
             self.vy = 0
-            self.pos.y = 780
+            self.pos.y = 760
                 #gravity
         
         
@@ -143,7 +192,7 @@ class player:
 plats = []
 for i in range(5):
     plats.append(platform(random.randrange(50, 700), random.randrange(50, 700)))
-for i in range(8):
+for i in range(3):
     plats.append(mblock(random.randrange(50, 600), random.randrange(50, 700)))
 for i in range(1):
     plats.append(iblock(random.randrange(50, 700), random.randrange(50, 500)))
@@ -154,6 +203,9 @@ b2 = mblock(400, 500)
 
 ah = player()
 while(1):
+    clock.tick(60)
+
+
     for i in range(len(plats)):
         plats[i].move()
     
@@ -168,6 +220,7 @@ while(1):
 
 
     ah.draw()
+    ah.animate()
     b1.draw()
 
 
