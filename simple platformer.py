@@ -225,32 +225,41 @@ while not gameover and health > 0: #GAME LOOP###################################
     
     if vx < 0:
         ticker+=1
+        rownum = 0
         if ticker%10==0:
-            rownum = 1
             framenum+=1
         if framenum > 6:
             framenum = 0
     if vx > 0:
         ticker+=1
+        rownum = 1
         if ticker%10==0:
-            rownum = 0
             framenum+=1
         if framenum > 6:
             framenum = 0
     if vy < 0:
         ticker+=1
+        rownum = 2
         if ticker%10==0:
-            rownum = 2
             framenum+=1
         if framenum > 6:
             framenum = 0
     if vy > 0:
         ticker+=1
+        rownum = 3
         if ticker%10==0:
-            rownum = 3
             framenum+=1
         if framenum > 6:
             framenum = 0
+    
+    
+    
+    
+    
+    
+    
+    
+    
     if enemy1[0] > 0:
         ticker1+=1
         if ticker1%10==0:

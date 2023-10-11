@@ -28,10 +28,7 @@ class platform():
     
     def move(self):
         pass
-    def collide(self):
-        pass
-    def collide2(self):
-        pass
+
 
 class mblock(platform):
     def __init__(self, xpos, ypos):
@@ -55,10 +52,6 @@ class mblock(platform):
                 self.direction*=-1
             else:
                 self.pos.x+=2
-    def collide(self):
-        pass
-    def collide2(self):
-        pass
 
 class iblock(platform):
     def __init__(self, xpos, ypos):
@@ -68,8 +61,7 @@ class iblock(platform):
         pygame.draw.rect(screen, (100, 150, 255), (self.pos.x, self.pos.y, 80, 30))
     def move(self):
         pass
-    def collide(self):
-        return self.pos
+
 
 
 
@@ -87,46 +79,39 @@ class player:
         self.link.set_colorkey((200,0,255))
         self.framewidth = 20
         self.frameheight = 40
+        self.currentplat = 0
 
     def draw(self):
         screen.blit(self.link, (self.pos.x, self.pos.y), (self.framewidth*self.framenum, self.rownum*self.frameheight, self.framewidth, self.frameheight))
 
 
     def animate(self):
+        #Fixed animations
         if self.vx < 0:
             self.ticker+=1
             self.rownum = 0
-        
-        if self.ticker%10==0:
-            self.rownum = 1
-            self.framenum+=1
-        
-        if self.framenum > 6:
-            self.framenum = 0
+            if self.ticker%10==0:
+                self.framenum+=1
+            
+            if self.framenum > 6:
+                self.framenum = 0
         
         if self.vx > 0:
             self.ticker+=1
+            self.rownum = 1
             if self.ticker%10==0:
-                self.rownum = 0
                 self.framenum+=1
             if self.framenum > 6:
                 self.framenum = 0
         
         if self.vy < 0:
             self.ticker+=1
+            self.rownum = 2
             if self.ticker%10==0:
-                self.rownum = 2
                 self.framenum+=1
             if self.framenum > 6:
                 self.framenum = 0
         
-        if self.vy > 0:
-            self.ticker+=1
-            if self.ticker%10==0:
-                self.rownum = 3
-                self.framenum+=1
-            if self.framenum > 6:
-                self.framenum = 0
 
 
     def move(self,keys):
@@ -165,24 +150,46 @@ class player:
         
         if self.isonground == False:
             self.vy+=.2 #notice this grows over time, aka ACCELERATION
+
+
+        
+        if self.currentplat == 2:
+            self.vx += self.vx +6
+            self.isonground = True
         
         self.pos += (self.vx, self.vy)
 
-
-
-
-
         
-    def collide(self):
-
+    def collide(self,plats):
+        colliding = False
+    
         if self.pos.y > 760:
+            colliding = True
             self.isonground = True
-            self.vy = 0
             self.pos.y = 760
-                #gravity
-        
-        
 
+        playerrect = pygame.rect.Rect(self.pos, (self.framewidth, self.frameheight))        
+        for plat in plats:
+            platrect = pygame.rect.Rect(plat.pos.x, plat.pos.y, 80, 30)
+            if playerrect.colliderect(platrect):
+                colliding = True
+                if isinstance(plat, iblock):
+                    self.currentplat = 2
+                elif isinstance(plat, mblock):
+                    self.currentplat = 3
+
+                else:
+                    self.currentplat = 1
+
+        if colliding:        
+            self.isonground = True
+            if self.vy > 0:
+                self.vy = 0
+                self.pos.y -= 1
+                #gravity
+        else:
+            self.currentplat = 0
+            self.isonground = False
     
 
 
@@ -194,11 +201,10 @@ for i in range(5):
     plats.append(platform(random.randrange(50, 700), random.randrange(50, 700)))
 for i in range(3):
     plats.append(mblock(random.randrange(50, 600), random.randrange(50, 700)))
-for i in range(1):
+for i in range(4):
     plats.append(iblock(random.randrange(50, 700), random.randrange(50, 500)))
 
 
-b1 = platform(200,750)
 b2 = mblock(400, 500)
 
 ah = player()
@@ -216,13 +222,11 @@ while(1):
     screen.fill(color)
     for i in range(len(plats)):
         plats[i].draw()
-    ah.collide()
+    ah.collide(plats)
 
 
     ah.draw()
     ah.animate()
-    b1.draw()
-
 
 
     pygame.display.flip()
