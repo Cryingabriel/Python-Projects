@@ -2,7 +2,7 @@ import pygame
 import random
 from pygame.math import Vector2
 #Constants
-screens = (800,800)
+screens = (800, 800)
 color = (0,0,0)
 clock = pygame.time.Clock()
 #init
@@ -20,8 +20,8 @@ gover = False
 
 
 class platform():
-    def __init__(self,xpos,ypos):
-        self.pos = Vector2(xpos,ypos)
+    def __init__(self, xpos, ypos):
+        self.pos = Vector2(xpos, ypos)
 
     def draw(self):
         pygame.draw.rect(screen, (100, 50, 100), (self.pos.x, self.pos.y, 80, 30))
@@ -32,7 +32,7 @@ class platform():
 
 class mblock(platform):
     def __init__(self, xpos, ypos):
-        self.pos = Vector2(xpos,ypos)
+        self.pos = Vector2(xpos, ypos)
         self.startx = self.pos.x
         self.starty = self.pos.y
         self.direction = 1
@@ -46,24 +46,29 @@ class mblock(platform):
             if self.pos.x < self.startx:
                 self.direction*=-1
             else:
-                self.pos.x-=2
+                self.pos.x-= random.randint(0,3)
         else:
             if self.pos.x > self.startx +200:
                 self.direction*=-1
             else:
-                self.pos.x+=2
+                self.pos.x+= random.randint(0,2)
 
 class iblock(platform):
     def __init__(self, xpos, ypos):
-        self.pos = Vector2(xpos,ypos)
+        self.pos = Vector2(xpos, ypos)
     
     def draw(self):
         pygame.draw.rect(screen, (100, 150, 255), (self.pos.x, self.pos.y, 80, 30))
     def move(self):
         pass
 
-
-
+class trampoline(platform):
+    def __init__(self, xpos, ypos):
+        self.pos = Vector2(xpos, ypos)
+    def draw(self):
+        pygame.draw.rect(screen, (255, 255, 255), (self.pos.x, self.pos.y, 80, 30))
+    def move(self):
+        pass
 
 
 class player:
@@ -151,17 +156,22 @@ class player:
         if self.isonground == False:
             self.vy+=.2 #notice this grows over time, aka ACCELERATION
 
-
+        if self.pos.y <=0:
+            self.vy+=1
         
         if self.currentplat == 2:
             self.vx += self.vx +6
             self.isonground = True
+
+        if self.currentplat == 4:
+            self.vy -= 4
         
         self.pos += (self.vx, self.vy)
 
         
     def collide(self,plats):
         colliding = False
+
     
         if self.pos.y > 760:
             colliding = True
@@ -177,6 +187,8 @@ class player:
                     self.currentplat = 2
                 elif isinstance(plat, mblock):
                     self.currentplat = 3
+                elif isinstance(plat, trampoline):
+                    self.currentplat = 4
 
                 else:
                     self.currentplat = 1
@@ -190,10 +202,6 @@ class player:
         else:
             self.currentplat = 0
             self.isonground = False
-    
-
-
-
 
 
 plats = []
@@ -203,6 +211,9 @@ for i in range(3):
     plats.append(mblock(random.randrange(50, 600), random.randrange(50, 700)))
 for i in range(4):
     plats.append(iblock(random.randrange(50, 700), random.randrange(50, 500)))
+
+for i in range(2):
+    plats.append(trampoline(random.randrange(50, 500), random.randrange(50, 700)))
 
 
 b2 = mblock(400, 500)
