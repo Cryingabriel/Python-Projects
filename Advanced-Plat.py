@@ -39,7 +39,7 @@ class mblock(platform):
 
     
     def draw(self):
-        pygame.draw.rect(screen, (200, 50, 100), (self.pos.x, self.pos.y, 80, 30))
+        pygame.draw.rect(screen, (100, 50, 200), (self.pos.x, self.pos.y, 80, 30))
     
     def move(self):
         if self.direction == 1:
@@ -53,12 +53,12 @@ class mblock(platform):
             else:
                 self.pos.x+= random.randint(0,2)
 
-class iblock(platform):
+class conblock(platform):
     def __init__(self, xpos, ypos):
         self.pos = Vector2(xpos, ypos)
     
     def draw(self):
-        pygame.draw.rect(screen, (100, 150, 255), (self.pos.x, self.pos.y, 80, 30))
+        pygame.draw.rect(screen, (50, 50, 50), (self.pos.x, self.pos.y, 80, 30))
     def move(self):
         pass
 
@@ -69,6 +69,16 @@ class trampoline(platform):
         pygame.draw.rect(screen, (255, 255, 255), (self.pos.x, self.pos.y, 80, 30))
     def move(self):
         pass
+
+class Iceblock(platform):
+    def __init__(self, xpos, ypos):
+        self.pos = Vector2(xpos, ypos)
+    
+    def draw(self):
+        pygame.draw.rect(screen, (100, 150, 255), (self.pos.x, self.pos.y, 80, 30))
+    def move(self):
+        pass
+
 
 
 class player:
@@ -117,8 +127,6 @@ class player:
             if self.framenum > 6:
                 self.framenum = 0
         
-
-
     def move(self,keys):
         for event in pygame.event.get(): #quit game if x is pressed in top corner
         
@@ -165,12 +173,22 @@ class player:
 
         if self.currentplat == 4:
             self.vy -= 4
+        if self.currentplat == 5:
+            f = random.randint(1,2)
+            if f == 1:
+                self.vx-=2
+            elif f == 2:
+                self.vx+=2
         
         self.pos += (self.vx, self.vy)
 
-        
     def collide(self,plats):
         colliding = False
+
+        if self.pos.x < 0:
+            self.pos.x = 0
+        elif self.pos.x+20 > 800:
+            self.pos.x = 780
 
     
         if self.pos.y > 760:
@@ -183,13 +201,14 @@ class player:
             platrect = pygame.rect.Rect(plat.pos.x, plat.pos.y, 80, 30)
             if playerrect.colliderect(platrect):
                 colliding = True
-                if isinstance(plat, iblock):
+                if isinstance(plat, conblock):
                     self.currentplat = 2
                 elif isinstance(plat, mblock):
                     self.currentplat = 3
                 elif isinstance(plat, trampoline):
                     self.currentplat = 4
-
+                elif isinstance(plat, Iceblock):
+                    self.currentplat = 5
                 else:
                     self.currentplat = 1
 
@@ -203,17 +222,20 @@ class player:
             self.currentplat = 0
             self.isonground = False
 
-
 plats = []
 for i in range(5):
     plats.append(platform(random.randrange(50, 700), random.randrange(50, 700)))
 for i in range(3):
     plats.append(mblock(random.randrange(50, 600), random.randrange(50, 700)))
 for i in range(4):
-    plats.append(iblock(random.randrange(50, 700), random.randrange(50, 500)))
+    plats.append(conblock(random.randrange(50, 700), random.randrange(50, 500)))
 
 for i in range(2):
     plats.append(trampoline(random.randrange(50, 500), random.randrange(50, 700)))
+
+for i in range(4):
+    plats.append(Iceblock(random.randrange(100, 700), random.randrange(100, 700)))
+    
 
 
 b2 = mblock(400, 500)
