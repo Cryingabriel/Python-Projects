@@ -10,6 +10,9 @@ pygame.init()
 screen = pygame.display.set_mode(screens)
 pygame.display.set_caption("plat with inheritance")
 
+playerpos = Vector2(100, 780)
+
+
 LEFT = 0 
 RIGHT = 1 
 UP = 2
@@ -28,7 +31,8 @@ class platform():
     
     def move(self):
         pass
-
+    def collide(self):
+        pass
 
 class mblock(platform):
     def __init__(self, xpos, ypos):
@@ -52,6 +56,8 @@ class mblock(platform):
                 self.direction*=-1
             else:
                 self.pos.x+= random.randint(0,2)
+    def collide(self):
+        pass
 
 class conblock(platform):
     def __init__(self, xpos, ypos):
@@ -61,6 +67,8 @@ class conblock(platform):
         pygame.draw.rect(screen, (50, 50, 50), (self.pos.x, self.pos.y, 80, 30))
     def move(self):
         pass
+    def collide(self):
+        pass
 
 class trampoline(platform):
     def __init__(self, xpos, ypos):
@@ -68,6 +76,8 @@ class trampoline(platform):
     def draw(self):
         pygame.draw.rect(screen, (255, 255, 255), (self.pos.x, self.pos.y, 80, 30))
     def move(self):
+        pass
+    def collide(self):
         pass
 
 class Iceblock(platform):
@@ -78,11 +88,11 @@ class Iceblock(platform):
         pygame.draw.rect(screen, (100, 150, 255), (self.pos.x, self.pos.y, 80, 30))
     def move(self):
         pass
-
-
+    def collide(self):
+        pass
 
 class player:
-    def __init__(self, xpos = 100, ypos = 780):
+    def __init__(self, xpos , ypos):
         self.pos = Vector2(xpos,ypos)
         self.isonground = False
         self.vx = 0
@@ -95,6 +105,7 @@ class player:
         self.framewidth = 20
         self.frameheight = 40
         self.currentplat = 0
+
 
     def draw(self):
         screen.blit(self.link, (self.pos.x, self.pos.y), (self.framewidth*self.framenum, self.rownum*self.frameheight, self.framewidth, self.frameheight))
@@ -179,9 +190,9 @@ class player:
                 self.vx-=2
             elif f == 2:
                 self.vx+=2
+
         
         self.pos += (self.vx, self.vy)
-
     def collide(self,plats):
         colliding = False
 
@@ -209,6 +220,8 @@ class player:
                     self.currentplat = 4
                 elif isinstance(plat, Iceblock):
                     self.currentplat = 5
+                elif isinstance(plat, breakblock):
+                    self.currentplat = 6
                 else:
                     self.currentplat = 1
 
@@ -222,6 +235,22 @@ class player:
             self.currentplat = 0
             self.isonground = False
 
+
+
+class breakblock(platform):
+    def __init__(self, xpos, ypos):
+        self.pos = Vector2(xpos, ypos)
+        self.isAlive = True
+    
+    def draw(self):
+        if self.isAlive == True:
+            pygame.draw.rect(screen, (0, 150, 0), (self.pos.x, self.pos.y, 80, 30))
+    def move(self):
+        pass
+    #def collide(self, player):
+    
+       #if player.pos.x >= self.pos.x and player.pos.y > self.pos.y and player.pos.x <= self.pos.x + 20 and player.pos.y < self.pos.y+30:
+           #self.isAlive = False
 plats = []
 for i in range(5):
     plats.append(platform(random.randrange(50, 700), random.randrange(50, 700)))
@@ -235,12 +264,11 @@ for i in range(2):
 
 for i in range(4):
     plats.append(Iceblock(random.randrange(100, 700), random.randrange(100, 700)))
-    
 
 
-b2 = mblock(400, 500)
+l = breakblock(random.randrange(100, 150), random.randrange(700, 750))
 
-ah = player()
+ah = player(playerpos.x, playerpos.y)
 while(1):
     clock.tick(60)
 
@@ -248,19 +276,18 @@ while(1):
     for i in range(len(plats)):
         plats[i].move()
     
-    
+    ah.collide(plats)
+    #l.collide(player)
     ah.move(keys)
     
     #render section
     screen.fill(color)
     for i in range(len(plats)):
         plats[i].draw()
-    ah.collide(plats)
-
-
+    
     ah.draw()
     ah.animate()
-
+    l.draw()
 
     pygame.display.flip()
 pygame.quit()
