@@ -7,19 +7,21 @@ my_font = pygame.font.SysFont('Comic Sans MS', 30)
 screen.fill((0,0,0))
 mexit = False
 p1Score = 0
+lives = 3
 clock = pygame.time.Clock()
 class brick:
     def __init__(self, xpos,ypos):
         self.xpos = xpos
         self.ypos = ypos
         self.alive = True
+        self.r = random.randint(0,255)
+        self.g = random.randint(0,255)
+        self.b = random.randint(0,255)
     
     def draw(self):
-        r = random.randint(0,255)
-        g = random.randint(0,255)
-        b = random.randint(0,255)
+        
         if self.alive is True:
-            pygame.draw.rect(screen, (r, g, b), (self.xpos, self.ypos, 50,20))
+            pygame.draw.rect(screen, (self.r, self.g, self.b), (self.xpos, self.ypos, 50,20))
         elif self.alive == False:
             pygame.draw.rect(screen, (0, 0, 0), (self.xpos, self.ypos, 50, 20))
     def collide(self,bx,by):
@@ -48,7 +50,7 @@ by = 600
 bVx = 5
 bVy = 5
 #______________________________
-while not mexit:
+while not mexit and lives > 0:
     
     clock.tick(60)
     
@@ -72,12 +74,18 @@ while not mexit:
     by += bVy
 
 
-    if by < 0 or by + 20 > 800:
+    if by < 0:
         bVy *= -1
     if bx < 0 or bx+ 20 > 800:
         bVx *= -1
     if bx >= p1x and by > p1y and bx <= p1x+100 and by < p1y+20:
         bVy *= -1
+    if by + 20 > 800:
+        lives -= 1
+        bx = 350
+        by = 600
+        bVy *= -1
+
 
     #BRICK COLLISION
     for i in range (len(group)):
@@ -89,10 +97,20 @@ while not mexit:
     for i in range (len(group)):
         group[i].draw()
     font = pygame.font.Font(None, 74)
+    
+    text4 = my_font.render("Score: ", False, (255, 0, 0))
+    screen.blit(text4, (160, 10))
+    
     text = font.render(str(p1Score), 1, (255,255,0))
     screen.blit(text, (250,10))
+
+    text3 = my_font.render("Lives: ", False, (255, 0, 0))
+    screen.blit(text3, (320, 10))
+
+    text2 = font.render(str(lives), 1, (255,255,0))
+    screen.blit(text2, (400,10))
     if p1Score == 144:
-        text_surface = my_font.render('YOU WIN!', False, (255,0,0))
+        text_surface = my_font.render('YOU WIN!', False, (255, 0, 0))
         screen.blit(text_surface, (380,400))
     pygame.draw.rect(screen, (255,255,255), (p1x, p1y, 100, 20), 1)
     pygame.draw.circle(screen, (255,255,255), (bx, by), 10)

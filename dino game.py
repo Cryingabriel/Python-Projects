@@ -34,7 +34,7 @@ while not mexit:
         
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            mexit = True;
+            mexit = True
     
     #timer section___________________
     clock.tick(60)
@@ -46,7 +46,7 @@ while not mexit:
         touchground = True
         vy = 0
         p1y = 460
-    #check for player/cactus collision
+    #check for player/cactus collisionw
     for x, y in zip (cactusx, cactush):
         a = pygame.Rect((x, 480-y), (30,80))
         b = pygame.Rect((p1x,p1y), (30,30))
