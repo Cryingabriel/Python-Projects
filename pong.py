@@ -30,9 +30,9 @@ while not mexit:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             mexit = True
-            
 
-    
+
+
     
     #_________________
     keys = pygame.key.get_pressed()
@@ -66,6 +66,21 @@ while not mexit:
     elif bx >= 690:
         bVx *= -1
         p1Score += 1
+
+    if p1Score == 10 or p2Score == 10:
+        mexit = True
+
+    if p1y < 0:
+        p1y = 0
+    elif p1y + 100 > 500:
+        p1y = 400
+    
+    if p2y < 0:
+        p2y = 0
+    elif p2y + 100 > 500:
+        p2y = 400
+
+    
     #----------render---------
     screen.fill((0,0,0))
     font = pygame.font.Font(None, 74)
