@@ -52,8 +52,6 @@ while not mexit:
     by += bVy
     
     #reflect ball
-#     if bx < 0 or bx + 20 > 700:
-#         bVx *= -1
     if by < 0 or by + 20 > 500:
         bVy *= -1
     if bx < p1x + 30 and by + 20 > p1y and by < p1y +100:
@@ -70,6 +68,9 @@ while not mexit:
     if p1Score == 10 or p2Score == 10:
         mexit = True
 
+
+
+    #makes the players not go off the screen
     if p1y < 0:
         p1y = 0
     elif p1y + 100 > 500:
