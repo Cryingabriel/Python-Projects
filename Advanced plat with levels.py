@@ -363,7 +363,7 @@ class LevelTwo(States):
         plats.append(mblock(400, 300))
         plats.append(platform(400, 600))
         plats.append(trampoline(600, 700))
-        goals.append(goal(250, 350))
+        goals.append(goal(150, 750))
 
     def update(self, screen, dt):
         self.draw(screen)
